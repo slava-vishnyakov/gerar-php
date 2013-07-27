@@ -4,6 +4,8 @@
 
 This is an experiment in configuration management. Open `example.php` if you will.
 
+Currently only Ubuntu is implemented. Probably going to implement CentOS later.
+
 # Prerequisites
 
     apt-get update && apt-get install -y php5-cli
