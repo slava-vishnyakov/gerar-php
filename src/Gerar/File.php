@@ -80,13 +80,21 @@ class File {
     {
         if($needle instanceof RegExp) {
             preg_match_all($needle->regexp, $this->read(), $m);
-            if($m) {
+            if(isset($m[1])) {
                 return $m[1];
             }
         } else {
             if(strstr($this->read(), $needle)) {
                 return $needle;
             };
+        }
+        return null;
+    }
+
+    public function shouldHaveLine($string)
+    {
+        if(!$this->findString($string)) {
+            $this->append($string);
         }
     }
 
