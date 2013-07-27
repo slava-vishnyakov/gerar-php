@@ -28,7 +28,7 @@ class Package
     private function isInstalled()
     {
         if(ThisServer::isUbuntu()) {
-            return Process::getReturnCode("dpkg -s '{$this->name}'") == 0;
+            return Process::getReturnCode("dpkg -s '{$this->name}' 2>/dev/null >/dev/null") == 0;
         }
         Gerar::notImplemented();
     }
