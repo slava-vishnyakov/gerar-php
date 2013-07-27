@@ -66,7 +66,7 @@ Hostname::run('vagrant.local', function() {
 
     EtcHosts::file()
         ->shouldResolve('rarestblog.com', '127.0.0.1')
-        ->shouldNotResolve('rarestblog1.com');
+        ->shouldNotResolve('rarestblog.com');
 
     Git::src('git@github:')
         ->shouldBeAt('/home/git')
