@@ -1,11 +1,15 @@
+# PHP configuration management
+
+... because I'm too lazy to remember Puppet or Chef syntax.
+
 This is an experiment in configuration management. Open `example.php` if you will.
 
-Prerequisites
+# Prerequisites
 
     apt-get update && apt-get install -y php5-cli
     ./gerar example.php
 
-Example:
+## Example:
 
     <?php
 
