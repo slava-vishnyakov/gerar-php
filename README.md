@@ -7,6 +7,8 @@ This is an experiment in configuration management. Open `example.php` if you wil
 # Prerequisites
 
     apt-get update && apt-get install -y php5-cli
+    git clone git@github.com:slava-vishnyakov/gerar-php.git gerar
+    cd gerar
     ./gerar example.php
 
 ## Example:
