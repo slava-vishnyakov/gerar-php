@@ -20,6 +20,7 @@ class Process
         $result = Process::read("($string  >/dev/null 2>/tmp/error.txt) && echo 'YES'");
         if($result != "YES") {
             $error = file_get_contents('/tmp/error.txt');
+            Console::log("While running '$string' an error happened:");
             Console::log($error);
             throw new \RuntimeException($error);
         }
