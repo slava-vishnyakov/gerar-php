@@ -134,9 +134,10 @@ What it does:
 
         Nginx::server()
             ->shouldBeInstalled()
-            ->shouldForward('http://rarestblog.com/update-328719', 'http://localhost:8000/')
-            ->shouldForward('http://rarestblog.com/', 'http://localhost:9000/')
-            ->shouldServePhpFpm('rarestblog.com', '/home/user/php/myApp/public');
+            ->shouldProxy('http://rarestblog.com/update-328719', 'http://localhost:8000/')
+            ->shouldProxy('http://rarestblog.com/', 'http://localhost:9000/')
+            ->shouldServePhpFpm('rarestblog.com', '/home/user/php/myApp/public')
+            ->shouldServePhpFpm('rarestblog.com', '/home/user/php/myApp/public/index.php');
 
         NginxPassenger::server()
             ->shouldBeInstalled()
