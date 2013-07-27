@@ -97,6 +97,13 @@ Example:
 
         Ssh::server()->securify();
 
+What it does:
+
+        User::shouldHaveOneSudoUserWithSshKey();
+        Ssh::server()
+            ->shouldNotAllowRoot();
+            ->shouldNotAllowPlainTextPasswords();
+
 ## Does not work yet
 
 ### Git projects
