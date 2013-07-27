@@ -4,7 +4,7 @@
 
 This is an experiment in configuration management. Open `example.php` if you will.
 
-Currently only Ubuntu is implemented. Probably going to implement CentOS later.
+Currently only **Ubuntu** is implemented. Probably going to implement CentOS later.
 
 # Prerequisites
 
