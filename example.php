@@ -70,6 +70,8 @@ Hostname::run('vagrant.local', function() {
 
     Ssh::server()->securify();
 
+    ## Does not work yet
+
     Git::src('git@github:')
         ->shouldBeAt('/home/git')
         ->shouldBeOnBranch('origin/production');
