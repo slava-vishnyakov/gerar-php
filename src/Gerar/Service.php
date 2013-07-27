@@ -40,6 +40,13 @@ class Service {
 
     public function start()
     {
+        Console::log("Starting {$this->name} service");
         Process::runAndCheckReturnCode("service {$this->name} start");
+    }
+
+    public function restart()
+    {
+        Console::log("Restarting {$this->name} service");
+        Process::runAndCheckReturnCode("service {$this->name} restart");
     }
 }

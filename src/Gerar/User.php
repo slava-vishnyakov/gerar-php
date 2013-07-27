@@ -14,6 +14,13 @@ class User
         return new User($name);
     }
 
+    private static function getSudoerLogins()
+    {
+        $sudoers = Process::read('cat /etc/sudoers | grep -vP "^(Defaults|#|%|\s*$|root)" | awk {\'print $1\'}');
+        $sudoers = explode("\n", $sudoers);
+        return $sudoers;
+    }
+
     public function getHome()
     {
         return trim(Process::read("sudo -u {$this->name} echo \$HOME"));
@@ -144,5 +151,27 @@ class User
         $sudoers->shouldHaveLine($definition);
 
         return $this;
+    }
+
+    public static function shouldHaveOneSudoUserWithSshKey()
+    {
+        $sudoers = self::getSudoerLogins();
+        if(intval($sudoers) == 0) {
+            Console::log("/etc/sudoers must have one sudo user");
+            throw new \RuntimeException();
+        }
+
+        foreach($sudoers as $user) {
+            if(User::named($user)->hasAuthorizedKeysFile()) {
+                return true;
+            }
+            Console::log("At least one sudoer must have authorized_keys file");
+            throw new \RuntimeException();
+        }
+    }
+
+    private function hasAuthorizedKeysFile()
+    {
+        return $this->authorizedKeysFile()->exists();
     }
 }
