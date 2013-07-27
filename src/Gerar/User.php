@@ -125,11 +125,24 @@ class User
         }
 
         $sudoers = File::named('/etc/sudoers');
-        # gatoatigrado ALL=NOPASSWD: /bin/set-slow-cpufreq
+        $definition = "{$this->name} ALL = NOPASSWD: " . join(', ', $commands) . "\n";
 
-        $test = "test\nfsfsddfs\ndfsfsddsfds";
+        $sudoers->shouldHaveLine($definition);
 
-        $line = $sudoers->findString(new RegExp("/^{$this->name}\\s.*?/m"));
-        print $line;
+        return $this;
+    }
+
+    public function shouldHaveSudoFor($commands)
+    {
+        if(is_string($commands)) {
+            $commands = array($commands);
+        }
+
+        $sudoers = File::named('/etc/sudoers');
+        $definition = "{$this->name} ALL = " . join(', ', $commands) . "\n";
+
+        $sudoers->shouldHaveLine($definition);
+
+        return $this;
     }
 }
