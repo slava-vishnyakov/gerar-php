@@ -10,5 +10,10 @@ class RegExp {
         $this->regexp = $regexp;
     }
 
+    function __toString()
+    {
+        return "RegExp({$this->regexp})";
+    }
+
 
 }

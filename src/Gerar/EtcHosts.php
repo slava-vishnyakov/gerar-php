@@ -2,7 +2,8 @@
 
 namespace Gerar;
 
-class EtcHosts {
+class EtcHosts
+{
     public static function file()
     {
         return new self;
@@ -10,9 +11,9 @@ class EtcHosts {
 
     public function shouldResolve($host, $ip)
     {
-        if(ThisServer::isLinux()) {
+        if (ThisServer::isLinux()) {
             $line = "$ip $host\n";
-            if((@gethostbyaddr($host) != $ip) && (!$this->actualFile()->contains($line))) {
+            if ((@gethostbyaddr($host) != $ip) && (!$this->actualFile()->contains($line))) {
                 Console::log("Resoving $host -> $ip (via /etc/hosts)");
                 $this->actualFile()->shouldHaveLine($line);
             }
@@ -23,8 +24,11 @@ class EtcHosts {
 
     public function shouldNotResolve($host)
     {
-        if(ThisServer::isLinux()) {
-            $this->actualFile()->replaceIfPresent(new RegExp('/^(.*?)\b'.$host.'\b/m'), '\1');
+        if (ThisServer::isLinux()) {
+            $this->actualFile()
+                # TODO: This does not work
+                ->replaceIfPresent(new RegExp('/^\s*(\d\.)+\s+\b' . preg_quote($host) . '\s*$/m'), '')
+                ->replaceIfPresent(new RegExp('/^(.*?)\b' . preg_quote($host) . '\b/m'), '\1 # removed');
             return $this;
         }
         Gerar::notImplemented();

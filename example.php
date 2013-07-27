@@ -68,12 +68,14 @@ Hostname::run('vagrant.local', function() {
         ->shouldResolve('rarestblog.com', '127.0.0.1')
         ->shouldNotResolve('rarestblog.com');
 
+    Ssh::server()->securify();
+
     Git::src('git@github:')
         ->shouldBeAt('/home/git')
         ->shouldBeOnBranch('origin/production');
 
     Cron::named('artisan-cleanup')
-        ->shouldRun()->daily()->run('php artisan cleanup');
+        ->ofUser('root')->shouldRun()->daily()->run('php artisan cleanup');
 
 
     Rvm::version('1.9')
@@ -108,10 +110,6 @@ Hostname::run('vagrant.local', function() {
     File::named('/var/www/database.php')
         ->fromTemplate('files/database.php', array('password', $password));
 
-    Ssh::server()->securify();
-        # check one sudo user present
-        # ->shouldNotAllowRoot()
-        # ->shouldNotAllowPlainTextPasswords();
 
     Firewall::rules()
         ->shouldAllowToPort(22, '234.234.234.234')

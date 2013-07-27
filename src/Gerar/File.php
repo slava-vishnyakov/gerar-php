@@ -2,7 +2,8 @@
 
 namespace Gerar;
 
-class File {
+class File
+{
     function __construct($fileName)
     {
         $this->fileName = $fileName;
@@ -34,7 +35,7 @@ class File {
         $cacheFile = Gerar::getCacheFile("md5-" . md5($this->fileName));
         $md5 = md5_file($this->fileName);
 
-        if((!$cacheFile->exists()) || ($cacheFile->read() != $md5)) {
+        if ((!$cacheFile->exists()) || ($cacheFile->read() != $md5)) {
             call_user_func($callable);
             $md5 = md5_file($this->fileName);
             $cacheFile->write($md5);
@@ -45,9 +46,9 @@ class File {
 
     public function replaceIfPresent($needle, $newNeedle)
     {
-        if($this->contains($needle)) {
+        if ($this->contains($needle)) {
             $content = $this->read();
-            if($needle instanceof RegExp) {
+            if ($needle instanceof RegExp) {
                 $newContent = preg_replace($needle->regexp, $newNeedle, $content);
             } else {
                 $newContent = str_replace($needle, $newNeedle, $content);
@@ -59,7 +60,7 @@ class File {
 
     public function contains($needle)
     {
-        if($needle instanceof RegExp) {
+        if ($needle instanceof RegExp) {
             return preg_match($needle->regexp, $this->read());
         } else {
             return strstr($this->read(), $needle);
@@ -78,13 +79,16 @@ class File {
 
     public function findString($needle)
     {
-        if($needle instanceof RegExp) {
+        if ($needle instanceof RegExp) {
             preg_match_all($needle->regexp, $this->read(), $m);
-            if(isset($m[1])) {
+            if (isset($m[1])) {
                 return $m[1];
             }
+            if (isset($m[0])) {
+                return $m[0];
+            }
         } else {
-            if(strstr($this->read(), $needle)) {
+            if (strstr($this->read(), $needle)) {
                 return $needle;
             };
         }
@@ -93,9 +97,17 @@ class File {
 
     public function shouldHaveLine($string)
     {
-        if(!$this->findString($string)) {
+        if (!($string instanceof RegExp)) {
+            $searchString = new RegExp("/^" . rtrim(str_replace('/', '\\/', preg_quote($string))) . "$/m");
+        } else {
+            $searchString = $string;
+        }
+
+        if (!$this->findString($searchString)) {
             $this->append($string);
         }
+
+        return $this;
     }
 
 }
