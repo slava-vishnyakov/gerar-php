@@ -2,6 +2,8 @@
 
 namespace Gerar;
 
+Hostname::change('vagrant.local');
+
 Hostname::run('vagrant.local', function() {
     Console::log('Hello!');
 });
