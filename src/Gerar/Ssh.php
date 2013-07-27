@@ -4,12 +4,12 @@ namespace Gerar;
 
 class Ssh
 {
-    function server()
+    public static function server()
     {
         return new self;
     }
 
-    function securify()
+    public function securify()
     {
         User::shouldHaveOneSudoUserWithSshKey();
         $this->shouldNotAllowRoot();
