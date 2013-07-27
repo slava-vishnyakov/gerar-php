@@ -29,5 +29,13 @@ class ThisServer
         return PHP_OS == 'Linux';
     }
 
+    public static function mainExternalIp()
+    {
+        if(ThisServer::isLinux()) {
+            return Process::read("ifconfig  | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print \$1}'");
+        }
+        Gerar::notImplemented();
+    }
+
 
 }

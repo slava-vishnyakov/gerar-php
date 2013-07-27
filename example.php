@@ -62,15 +62,15 @@ Hostname::run('vagrant.local', function() {
         ->shouldHaveNoPasswordSudoFor('/usr/sbin/service')
         ->shouldHaveSudoFor('/bin/vi');
 
-    Git::src('git@github:')
-        ->shouldBeAt('/home/git')
-        ->shouldBeOnBranch('origin/production');
-
-    Console::log(ThisServer::mainExternalIp());
+    Console::log("My external IP is " . ThisServer::mainExternalIp());
 
     EtcHosts::file()
         ->shouldResolve('rarestblog.com', '127.0.0.1')
         ->shouldNotResolve('rarestblog1.com');
+
+    Git::src('git@github:')
+        ->shouldBeAt('/home/git')
+        ->shouldBeOnBranch('origin/production');
 
     Cron::named('artisan-cleanup')
         ->shouldRun()->daily()->run('php artisan cleanup');
