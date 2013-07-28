@@ -8,8 +8,8 @@ Currently only **Ubuntu** is implemented. Probably going to implement CentOS lat
 
 # Prerequisites
 
-    apt-get update && apt-get install -y php5-cli
-    git clone git@github.com:slava-vishnyakov/gerar-php.git gerar git
+    apt-get update && apt-get install -y php5-cli git
+    git clone git@github.com:slava-vishnyakov/gerar-php.git gerar
     cd gerar
     ./gerar --set-hostname vagrant.local
     ./gerar example.php
