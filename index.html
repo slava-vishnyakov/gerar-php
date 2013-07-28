@@ -1,0 +1,266 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Gerar-PHP by slava-vishnyakov</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Gerar-PHP</h1>
+        <p>Gerar-PHP: Configuration Management</p>
+
+        <p class="view"><a href="https://github.com/slava-vishnyakov/gerar-php">View the Project on GitHub <small>slava-vishnyakov/gerar-php</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/slava-vishnyakov/gerar-php/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/slava-vishnyakov/gerar-php/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/slava-vishnyakov/gerar-php">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="php-configuration-management" class="anchor" href="#php-configuration-management"><span class="octicon octicon-link"></span></a>PHP configuration management</h1>
+
+<p>... because I'm too lazy to remember Puppet or Chef syntax.</p>
+
+<p>This is <strong>an experiment</strong> in configuration management. Open <code>example.php</code> if you will.</p>
+
+<p>Currently only <strong>Ubuntu</strong> is implemented. Probably going to implement CentOS later.</p>
+
+<h1>
+<a name="prerequisites" class="anchor" href="#prerequisites"><span class="octicon octicon-link"></span></a>Prerequisites</h1>
+
+<pre><code>apt-get update &amp;&amp; apt-get install -y php5-cli git curl
+git clone https://github.com/slava-vishnyakov/gerar-php.git gerar
+curl -sS https://getcomposer.org/installer | php
+mv composer.phar /usr/local/bin/composer
+cd gerar
+composer dump
+./gerar --set-hostname vagrant.local
+./gerar example.php
+</code></pre>
+
+<h2>
+<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example:</h2>
+
+<pre><code>&lt;?php
+
+namespace Gerar;
+
+Hostname::change('vagrant.local');
+</code></pre>
+
+<h3>
+<a name="run-stuff-on-specific-hosts" class="anchor" href="#run-stuff-on-specific-hosts"><span class="octicon octicon-link"></span></a>Run stuff on specific hosts</h3>
+
+<pre><code>Hostname::run('vagrant.local', function() {
+    Console::log('Hello!');
+});
+
+Hostname::run('vagrant.local', function() {
+    Ubuntu::fixLocales();
+    Ubuntu::update();
+</code></pre>
+
+<h3>
+<a name="package-and-service-management" class="anchor" href="#package-and-service-management"><span class="octicon octicon-link"></span></a>Package and service management</h3>
+
+<pre><code>    Package::named("php5-cli mysql-server git imagemagick")
+        -&gt;shouldBeInstalled();
+
+    Service::named('apache2')
+        -&gt;shouldBeInstalled()
+        -&gt;shouldBeRunning()
+        -&gt;shouldBeRunningAtReboots();
+</code></pre>
+
+<h3>
+<a name="one-time-tasks" class="anchor" href="#one-time-tasks"><span class="octicon octicon-link"></span></a>One-time tasks</h3>
+
+<pre><code>    DoOnce::run('initializeServer', function() {
+        Console::log("We have an ignition!");
+    });
+</code></pre>
+
+<h3>
+<a name="http-requests" class="anchor" href="#http-requests"><span class="octicon octicon-link"></span></a>HTTP requests</h3>
+
+<pre><code>    File::named('/var/www/index.html')-&gt;write("Bender is great!");
+
+    Http::request('http://localhost/')
+        -&gt;onSuccess(function($request, $response) {
+            Console::log('My new code is "' . $response-&gt;getBody() . '"');
+        })
+        -&gt;run();
+</code></pre>
+
+<h3>
+<a name="port-monitoring" class="anchor" href="#port-monitoring"><span class="octicon octicon-link"></span></a>Port monitoring</h3>
+
+<pre><code>    Port::number(810)
+        -&gt;ifNotResponding(function() {
+            Console::log("Oops, port 810 is not responding, maybe we should start apache? Hint: won't help");
+            Service::named('apache2')-&gt;start();
+
+        });
+</code></pre>
+
+<h3>
+<a name="file-management" class="anchor" href="#file-management"><span class="octicon octicon-link"></span></a>File management</h3>
+
+<pre><code>    File::named('test.txt')-&gt;write(microtime(true));
+
+    File::named('test.txt')
+        -&gt;whenChanges(function() {
+            Console::log('Hello, World appears!');
+        })
+        -&gt;write('Hello, world!')
+        -&gt;replaceIfPresent('world', 'Gerar')
+        -&gt;replaceIfPresent(new Regexp('/He..o/'), 'Howdy');
+</code></pre>
+
+<h3>
+<a name="user-management" class="anchor" href="#user-management"><span class="octicon octicon-link"></span></a>User management</h3>
+
+<pre><code>    User::named('root')
+        -&gt;shouldHaveSshKey()
+        -&gt;mailPublicKeyOnce('user@super-server.com');
+
+    User::named('alex')
+        -&gt;shouldBePresent()
+        -&gt;haveSshKeyFrom('files/alex.ssh')
+        -&gt;shouldBeInGroup('sudo')
+        -&gt;shouldHaveNoPasswordSudoFor('/usr/sbin/service')
+        -&gt;shouldHaveSudoFor('/bin/vi');
+</code></pre>
+
+<h3>
+<a name="ips" class="anchor" href="#ips"><span class="octicon octicon-link"></span></a>IPs</h3>
+
+<pre><code>    Console::log("My external IP is " . ThisServer::mainExternalIp());
+</code></pre>
+
+<h3>
+<a name="etchosts" class="anchor" href="#etchosts"><span class="octicon octicon-link"></span></a>/etc/hosts</h3>
+
+<pre><code>    EtcHosts::file()
+        -&gt;shouldResolve('rarestblog.com', '127.0.0.1')
+        -&gt;shouldNotResolve('rarestblog.com');
+</code></pre>
+
+<h3>
+<a name="ssh-server" class="anchor" href="#ssh-server"><span class="octicon octicon-link"></span></a>SSH server</h3>
+
+<pre><code>    Ssh::server()-&gt;securify();
+</code></pre>
+
+<p>What it does:</p>
+
+<pre><code>    User::shouldHaveOneSudoUserWithSshKey();
+    Ssh::server()
+        -&gt;shouldNotAllowRoot();
+        -&gt;shouldNotAllowPlainTextPasswords();
+</code></pre>
+
+<h2>
+<a name="does-not-work-yet" class="anchor" href="#does-not-work-yet"><span class="octicon octicon-link"></span></a>Does not work yet</h2>
+
+<h3>
+<a name="git-projects" class="anchor" href="#git-projects"><span class="octicon octicon-link"></span></a>Git projects</h3>
+
+<pre><code>    Git::src('git@github:')
+        -&gt;shouldBeAt('/home/git')
+        -&gt;shouldBeOnBranch('origin/production');
+</code></pre>
+
+<h3>
+<a name="cron" class="anchor" href="#cron"><span class="octicon octicon-link"></span></a>Cron</h3>
+
+<pre><code>    Cron::named('artisan-cleanup')
+        -&gt;ofUser('root')-&gt;shouldRun()-&gt;daily()-&gt;run('php artisan cleanup');
+</code></pre>
+
+<h3>
+<a name="rvm" class="anchor" href="#rvm"><span class="octicon octicon-link"></span></a>RVM</h3>
+
+<pre><code>    Rvm::version('1.9')
+        -&gt;shouldBeInstalledFor('root');
+</code></pre>
+
+<h3>
+<a name="nginx-apache-serving-rails-and-php" class="anchor" href="#nginx-apache-serving-rails-and-php"><span class="octicon octicon-link"></span></a>Nginx, Apache, serving rails and PHP</h3>
+
+<pre><code>    Nginx::server()
+        -&gt;shouldBeInstalled()
+        -&gt;shouldProxy('http://rarestblog.com/update-328719', 'http://localhost:8000/')
+        -&gt;shouldProxy('http://rarestblog.com/', 'http://localhost:9000/')
+        -&gt;shouldServePhpFpm('rarestblog.com', '/home/user/php/myApp/public')
+        -&gt;shouldServePhpFpm('rarestblog.com', '/home/user/php/myApp/public/index.php');
+
+    NginxPassenger::server()
+        -&gt;shouldBeInstalled()
+        -&gt;shouldServeRailsApp('/home/user/rails/my_app/public');
+
+    Apache::server()
+        -&gt;shouldServePhp('rarestblog.com', '/home/user/php/myApp/public');
+</code></pre>
+
+<h3>
+<a name="git-webhooks-and-simple-apps" class="anchor" href="#git-webhooks-and-simple-apps"><span class="octicon octicon-link"></span></a>Git webhooks and simple apps</h3>
+
+<pre><code>    WebApp('127.0.0.1', 8000)
+        -&gt;url('/update-182739')-&gt;shouldRun('cd /home/user &amp;&amp; php update.php');
+</code></pre>
+
+<h3>
+<a name="testing" class="anchor" href="#testing"><span class="octicon octicon-link"></span></a>Testing</h3>
+
+<pre><code>    SshHost('backup')
+        -&gt;shouldBeAccessibleForUser('user');
+</code></pre>
+
+<h3>
+<a name="mysql" class="anchor" href="#mysql"><span class="octicon octicon-link"></span></a>Mysql</h3>
+
+<pre><code>    $password = RandomPassword::named('rarestblog-db-password');
+
+    MySQL::server()
+        -&gt;shouldHaveDatabase('rarestblog')
+        -&gt;shouldHaveUser('rarestblog', '127.0.0.1', $password)
+        -&gt;userShouldHaveFullAccessTo('rarestblog', '127.0.0.1', 'rarestblog.*');
+
+    File::named('/var/www/database.php')
+        -&gt;fromTemplate('files/database.php', array('password', $password));
+</code></pre>
+
+<h3>
+<a name="firewall" class="anchor" href="#firewall"><span class="octicon octicon-link"></span></a>Firewall</h3>
+
+<pre><code>    Firewall::rules()
+        -&gt;shouldAllowToPort(22, '234.234.234.234')
+        -&gt;shouldNotAllowAnyoneElseToPort(22);
+
+});
+
+Gerar()-&gt;shouldUpdateItselfEvery(15, 'minutes');
+</code></pre>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/slava-vishnyakov">slava-vishnyakov</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
