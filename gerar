@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-require 'vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
 if($argv[1] == '--set-hostname') {
     Hostname::change($argv[2]);
