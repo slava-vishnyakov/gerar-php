@@ -9,7 +9,7 @@ Currently only **Ubuntu** is implemented. Probably going to implement CentOS lat
 # Prerequisites
 
     apt-get update && apt-get install -y php5-cli
-    git clone git@github.com:slava-vishnyakov/gerar-php.git gerar
+    git clone git@github.com:slava-vishnyakov/gerar-php.git gerar git
     cd gerar
     ./gerar example.php
 
