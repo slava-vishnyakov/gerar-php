@@ -72,6 +72,9 @@ Hostname::run('vagrant.local', function() {
 
     ## Does not work yet
 
+    Service::named('nginx')
+        ->reloadIfFilesChanged(Directory::glob('/etc/nginx/sites-enabled/*'));
+
     Git::src('git@github:')
         ->shouldBeAt('/home/git')
         ->shouldBeOnBranch('origin/production');
