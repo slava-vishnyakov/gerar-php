@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+namespace Gerar;
+
 require __DIR__ . '/vendor/autoload.php';
 
 if($argv[1] == '--set-hostname') {
