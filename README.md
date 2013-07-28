@@ -2,15 +2,18 @@
 
 ... because I'm too lazy to remember Puppet or Chef syntax.
 
-This is an experiment in configuration management. Open `example.php` if you will.
+This is **an experiment** in configuration management. Open `example.php` if you will.
 
 Currently only **Ubuntu** is implemented. Probably going to implement CentOS later.
 
 # Prerequisites
 
-    apt-get update && apt-get install -y php5-cli git
+    apt-get update && apt-get install -y php5-cli git curl
     git clone https://github.com/slava-vishnyakov/gerar-php.git gerar
+    curl -sS https://getcomposer.org/installer | php
+    mv composer.phar /usr/local/bin/composer
     cd gerar
+    composer dump
     ./gerar --set-hostname vagrant.local
     ./gerar example.php
 
