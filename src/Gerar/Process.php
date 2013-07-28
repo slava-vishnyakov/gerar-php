@@ -15,14 +15,16 @@ class Process
         return join("\n", $output);
     }
 
-    public static function runAndCheckReturnCode($string)
+    public static function runAndCheckReturnCode($command)
     {
-        $result = Process::read("($string  >/dev/null 2>/tmp/error.txt) && echo 'YES'");
-        if($result != "YES") {
-            $error = file_get_contents('/tmp/error.txt');
-            Console::log("While running '$string' an error happened:");
-            Console::log($error);
-            throw new \RuntimeException($error);
+        $output = '';
+        $retVal = null;
+        exec($command, $output, $retVal);
+
+        if($retVal != 0) {
+            Console::log("While running '$command' an error happened:");
+            Console::log($output);
+            throw new \RuntimeException();
         }
         return true;
     }
