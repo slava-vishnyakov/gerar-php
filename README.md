@@ -45,7 +45,7 @@ Hostname::run('vagrant.local', function() {
 ### Package and service management
 
 ```php
-Package::named("php5-cli mysql-server git imagemagick")
+Package::named('php5-cli mysql-server git imagemagick')
     ->shouldBeInstalled();
 
 Service::named('apache2')
@@ -58,14 +58,14 @@ Service::named('apache2')
 
 ```php
 DoOnce::run('initializeServer', function() {
-    Console::log("We have an ignition!");
+    Console::log('We have an ignition!');
 });
 ```
 
 ### HTTP requests
 
 ```php
-File::named('/var/www/index.html')->write("Bender is great!");
+File::named('/var/www/index.html')->write('Bender is great!');
 
 Http::request('http://localhost/')
     ->onSuccess(function($request, $response) {
@@ -79,7 +79,7 @@ Http::request('http://localhost/')
 ```php
 Port::number(810)
     ->ifNotResponding(function() {
-        Console::log("Oops, port 810 is not responding, maybe we should start apache? Hint: won't help");
+        Console::log('Oops, port 810 is not responding, maybe we should start apache? Hint: won't help');
         Service::named('apache2')->start();
 
     });
@@ -117,7 +117,7 @@ User::named('alex')
 ### IPs
 
 ```php
-Console::log("My external IP is " . ThisServer::mainExternalIp());
+Console::log('My external IP is ' . ThisServer::mainExternalIp());
 ```
 
 ### /etc/hosts
