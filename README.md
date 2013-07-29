@@ -39,6 +39,7 @@ Hostname::run('vagrant.local', function() {
 Hostname::run('vagrant.local', function() {
     Ubuntu::fixLocales();
     Ubuntu::update();
+});
 ```
 
 ### Package and service management
@@ -218,8 +219,6 @@ File::named('/var/www/database.php')
 Firewall::rules()
     ->shouldAllowToPort(22, '234.234.234.234')
     ->shouldNotAllowAnyoneElseToPort(22);
-
-});
 
 Gerar()->shouldUpdateItselfEvery(15, 'minutes');
 ```
