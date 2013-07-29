@@ -79,7 +79,7 @@ Http::request('http://localhost/')
 ```php
 Port::number(810)
     ->ifNotResponding(function() {
-        Console::log('Oops, port 810 is not responding, maybe we should start apache? Hint: won't help');
+        Console::log('Oops, port 810 is not responding, maybe we should start apache? Hint: won\'t help');
         Service::named('apache2')->start();
 
     });
