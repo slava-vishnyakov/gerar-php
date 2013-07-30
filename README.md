@@ -11,7 +11,11 @@ Currently only **Ubuntu** is implemented. Probably going to implement CentOS lat
 ```sh
 curl http://git.io/T6Hw4w > /usr/local/bin/gerar
 chmod o+x /usr/local/bin/gerar
+```
 
+## Example run
+
+```sh
 gerar --set-hostname vagrant.local
 gerar example/example.php
 ```
