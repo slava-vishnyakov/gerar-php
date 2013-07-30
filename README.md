@@ -2,7 +2,7 @@
 
 ... because I'm too lazy to remember Puppet or Chef syntax.
 
-This is **an experiment** in configuration management. Open `example.php` if you will.
+This is **an experiment** in configuration management. Open `example/example.php` if you will.
 
 Currently only **Ubuntu** is implemented. Probably going to implement CentOS later.
 
@@ -15,7 +15,7 @@ Currently only **Ubuntu** is implemented. Probably going to implement CentOS lat
     cd gerar
     composer dump
     ./gerar --set-hostname vagrant.local
-    ./gerar example.php
+    ./gerar example/example.php
 
 ## Example:
 
