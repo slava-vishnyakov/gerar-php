@@ -6,7 +6,7 @@ This is **an experiment** in configuration management. Open `example.php` if you
 
 Currently only **Ubuntu** is implemented. Probably going to implement CentOS later.
 
-# Prerequisites
+Installation (global)
 
 ```sh
 curl http://git.io/T6Hw4w > /usr/local/bin/gerar
