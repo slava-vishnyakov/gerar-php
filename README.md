@@ -9,11 +9,14 @@ Currently only **Ubuntu** is implemented. Probably going to implement CentOS lat
 # Installation (global)
 
 ```sh
-curl http://git.io/T6Hw4w > /usr/local/bin/gerar
-chmod o+x /usr/local/bin/gerar
+curl https://github.com/slava-vishnyakov/gerar-php/raw/master/bin/gerar-install-global.php | sudo php
 ```
 
+run same command to update Gerar
+
 ## Example run
+
+(Warning! This could change your system! Read what you execute!)
 
 ```sh
 gerar --set-hostname vagrant.local
