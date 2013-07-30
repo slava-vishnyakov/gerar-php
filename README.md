@@ -9,14 +9,11 @@ Currently only **Ubuntu** is implemented. Probably going to implement CentOS lat
 # Prerequisites
 
 ```sh
-apt-get update && apt-get install -y php5-cli git curl
-git clone https://github.com/slava-vishnyakov/gerar-php.git gerar
-curl -sS https://getcomposer.org/installer | php
-mv composer.phar /usr/local/bin/composer
-cd gerar
-composer dump
-./gerar --set-hostname vagrant.local
-./gerar example/example.php
+curl http://git.io/T6Hw4w > /usr/local/bin/gerar
+chmod o+x /usr/local/bin/gerar
+
+gerar --set-hostname vagrant.local
+gerar example/example.php
 ```
 
 ## Example:
