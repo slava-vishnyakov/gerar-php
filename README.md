@@ -16,7 +16,7 @@ mv composer.phar /usr/local/bin/composer
 cd gerar
 composer dump
 ./gerar --set-hostname vagrant.local
-./gerar example.php
+./gerar example/example.php
 ```
 
 ## Example:
