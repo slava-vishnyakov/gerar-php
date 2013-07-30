@@ -1,4 +1,10 @@
 {
+    "name": "gerar/gerar",
+    "type": "library",
+    "description": "PHP Configuration Management",
+    "keywords": ["configuration"],
+    "homepage": "https://github.com/slava-vishnyakov/gerar-php",
+    "license": "MIT",
     "require": {
     },
     "autoload": {
