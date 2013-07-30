@@ -9,7 +9,7 @@ Currently only **Ubuntu** is implemented. Probably going to implement CentOS lat
 # Installation (global)
 
 ```sh
-curl https://github.com/slava-vishnyakov/gerar-php/raw/master/bin/gerar-install-global.php | sudo php
+curl -sSL http://git.io/FhkM4A | sudo php
 ```
 
 run same command to update Gerar
