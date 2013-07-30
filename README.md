@@ -9,7 +9,7 @@ Currently only **Ubuntu** is implemented. Probably going to implement CentOS lat
 # Installation (global)
 
 ```sh
-curl -sSL http://git.io/FhkM4A | sudo php
+wget -qO - http://git.io/FhkM4A | sudo php
 ```
 
 run same command to update Gerar
