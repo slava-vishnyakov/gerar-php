@@ -16,19 +16,15 @@ run same command to update Gerar
 
 ## Example run
 
-(Warning! This could change your system! Read what you execute!)
-
 ```sh
-gerar --set-hostname vagrant.local
-gerar example/example.php
+gerar --set-hostname your-host-name.com
+gerar some-file.php
 ```
 
 ## Example:
 
 ```php
-<?php
-
-namespace Gerar;
+<?php namespace Gerar;
 
 Hostname::change('vagrant.local');
 ```

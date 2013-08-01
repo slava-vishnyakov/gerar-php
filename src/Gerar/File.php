@@ -95,6 +95,13 @@ class File
         return null;
     }
 
+    public function shouldHaveLines($lines)
+    {
+        if(!$this->contains($lines)) {
+            $this->append($lines);
+        }
+    }
+
     public function shouldHaveLine($string)
     {
         if (!($string instanceof RegExp)) {
@@ -103,8 +110,12 @@ class File
             $searchString = $string;
         }
 
+        if(substr($searchString, -1, 1) != "\n") {
+            $searchString .= "\n";
+        }
+
         if (!$this->findString($searchString)) {
-            $this->append($string);
+            $this->append($string . "\n");
         }
 
         return $this;

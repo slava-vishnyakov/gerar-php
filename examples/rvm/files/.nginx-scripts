@@ -1,0 +1,44 @@
+function passenger-add-ruby-host() {
+  if [[ ! $1 ]]; then
+    echo "passenger-add-ruby-host hostname [path-to-public]";
+  fi
+
+  HOSTNAME=$1
+  PUBLIC=/home/rails/applications/$1/current/public
+
+  if [[ ! $1 ]]; then
+    echo "passenger-add-ruby-host hostname [path]";
+  fi
+
+  if [[ $2 ]]; then
+    PUBLIC=$2
+  fi
+
+  if [[ ! $2 ]]; then
+      id rails || useradd rails --create-home
+
+      if [[ ! -e /home/rails/applications/$1 ]]; then
+          mkdir -p /home/rails/applications/$1
+          chown rails:rails /home/rails/applications/
+          chown rails:rails /home/rails/applications/$1
+      fi
+  fi
+
+  if [[ ! -e /opt/nginx/conf/rails-sites/$1.conf ]]; then
+      echo "Adding $1";
+      echo -e "server {\n  listen 80;\n  server_name $1;\n  passenger_enabled on;\n  root $PUBLIC;\n# passenger_user nobody;\n  passenger_max_requests 500;\n\n}" \
+      > /opt/nginx/conf/rails-sites/$1.conf
+
+      service nginx reload
+  fi
+
+  echo "";
+  echo "-----";
+  echo "Deploy your Ruby application so that your public folder is \"$PUBLIC\"";
+  echo "-----";
+}
+
+function passenger-remove-ruby-host() {
+  rm /opt/nginx/conf/rails-sites/$1.conf
+  service nginx reload
+}

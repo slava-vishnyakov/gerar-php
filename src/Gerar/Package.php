@@ -25,7 +25,14 @@ class Package
         }
     }
 
-    private function isInstalled()
+    public function shouldBeRemoved()
+    {
+        if($this->isInstalled()) {
+            $this->remove();
+        }
+    }
+
+    public function isInstalled()
     {
         if(ThisServer::isUbuntu()) {
             return Process::getReturnCode("dpkg -s '{$this->name}' 2>/dev/null >/dev/null") == 0;
@@ -38,6 +45,16 @@ class Package
         Console::log("Package {$this->name} will be installed");
         if(ThisServer::isUbuntu()) {
             Process::runAndCheckReturnCode("DEBIAN_FRONTEND=noninteractive apt-get install -y {$this->name}");
+            return $this;
+        }
+        Gerar::notImplemented();
+    }
+
+    private function remove()
+    {
+        Console::log("Package {$this->name} will be removed");
+        if(ThisServer::isUbuntu()) {
+            Process::runAndCheckReturnCode("DEBIAN_FRONTEND=noninteractive apt-get remove -y {$this->name}");
             return $this;
         }
         Gerar::notImplemented();

@@ -158,7 +158,7 @@ class User
         $sudoers = self::getSudoerLogins();
         if(intval($sudoers) == 0) {
             Console::log("/etc/sudoers must have one sudo user");
-            throw new \RuntimeException();
+            throw new Exception();
         }
 
         foreach($sudoers as $user) {
@@ -166,7 +166,7 @@ class User
                 return true;
             }
             Console::log("At least one sudoer must have authorized_keys file");
-            throw new \RuntimeException();
+            throw new Exception();
         }
     }
 

@@ -10,9 +10,14 @@ class Process
         $retVal = null;
         exec($command, $output, $retVal);
         if($retVal != 0) {
-            throw new \RuntimeException("Command $command failed");
+            throw new Exception("Command $command failed");
         }
         return join("\n", $output);
+    }
+
+    public static function runInBash($arg)
+    {
+        return self::read("bash -lc " . escapeshellarg($arg));
     }
 
     public static function runAndCheckReturnCode($command)
@@ -21,10 +26,12 @@ class Process
         $retVal = null;
         exec($command, $output, $retVal);
 
+        $output = join("\n", $output);
+
         if($retVal != 0) {
             Console::log("While running '$command' an error happened:");
             Console::log($output);
-            throw new \RuntimeException();
+            throw new Exception();
         }
         return true;
     }

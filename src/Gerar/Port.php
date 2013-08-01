@@ -26,7 +26,7 @@ class Port {
     {
         $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
         if ($socket === false) {
-            throw new \RuntimeException("Cannot create socket");
+            throw new Exception("Cannot create socket");
         }
 
         $result = @socket_connect($socket, '127.0.0.1', $this->number);

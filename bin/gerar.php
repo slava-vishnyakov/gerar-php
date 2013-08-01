@@ -2,18 +2,30 @@
 
 namespace Gerar;
 
+global $argv;
+
 require __DIR__ . '/../vendor/autoload.php';
 
-if(empty($argv[1])) {
-    print "-- Gerar PHP --";
-    print "Usage: ";
-    print "  gerar --set-hostname hostname";
-    print "  gerar file.php";
-    exit();
-}
 
-if($argv[1] == '--set-hostname') {
-    Hostname::change($argv[2]);
-} else {
-    require $argv[1];
+try {
+    if ($script = file_get_contents('php://stdin')) {
+        eval('?>' . $script);
+    } elseif ($argv[1] == '--set-hostname') {
+        Hostname::change($argv[2]);
+    } elseif (!empty($argv[1])) {
+        require $argv[1];
+    } else {
+        print "-- Gerar PHP --                      \n";
+        print "                                     \n";
+        print "Usage:                               \n";
+        print "  cat file.php | gerar               \n";
+        print "  gerar --set-hostname hostname      \n";
+        print "  gerar file.php                     \n";
+        exit();
+    }
+} catch (Exception $e) {
+    print "---------------------------------------------\n";
+    print "[EXCEPTION] " . $e->getMessage() . "\n";
+    print $e->getTraceAsString();
+    print "---------------------------------------------\n";
 }

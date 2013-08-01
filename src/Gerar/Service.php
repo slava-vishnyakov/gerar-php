@@ -49,4 +49,11 @@ class Service {
         Console::log("Restarting {$this->name} service");
         Process::runAndCheckReturnCode("service {$this->name} restart");
     }
+
+    public function shouldBeRemoved()
+    {
+        Package::named($this->name)->shouldBeRemoved();
+        return $this;
+
+    }
 }

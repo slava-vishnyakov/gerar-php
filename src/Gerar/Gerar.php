@@ -6,7 +6,7 @@ class Gerar {
 
     public static function notImplemented()
     {
-        throw new \RuntimeException("Not implemented");
+        throw new Exception("Not implemented");
     }
 
     public static function getCacheFileName($name)
