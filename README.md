@@ -8,8 +8,12 @@ Currently only **Ubuntu** is implemented. Probably going to implement CentOS lat
 
 # Installation (global)
 
+All commands must be run as **root**
+
 ```sh
-wget -qO - http://git.io/FhkM4A | sudo php
+apt-get update
+apt-get install php5-cli
+wget -qO - http://git.io/FhkM4A | php
 ```
 
 run same command to update Gerar
@@ -21,7 +25,18 @@ gerar --set-hostname your-host-name.com
 gerar some-file.php
 ```
 
-## Example:
+## Example (install RVM, Ruby 1.9.3, Passenger and create `passenger-add-host` command)
+
+Read the source at http://git.io/oVoLFg
+
+```sh
+wget -qO - http://git.io/oVoLFg | php
+passenger-add-ruby-host test.com
+```
+
+You should now have directory to run your Passenger/Nginx Rails application.
+
+## Other examples
 
 ```php
 <?php namespace Gerar;
@@ -158,13 +173,6 @@ Git::src('git@github:')
 ```php
 Cron::named('artisan-cleanup')
     ->ofUser('root')->shouldRun()->daily()->run('php artisan cleanup');
-```
-
-### RVM
-
-```php
-Rvm::version('1.9')
-    ->shouldBeInstalledFor('root');
 ```
 
 ### Nginx, Apache, serving rails and PHP
