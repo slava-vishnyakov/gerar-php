@@ -25,7 +25,9 @@ gerar --set-hostname your-host-name.com
 gerar some-file.php
 ```
 
-## Example (install RVM, Ruby 1.9.3, Passenger and create `passenger-add-host` command)
+## Examples
+
+* Install RVM, Ruby 1.9.3, Passenger and create `passenger-add-host` command
 
 Read the source at http://git.io/oVoLFg
 
