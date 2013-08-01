@@ -16,7 +16,11 @@ class Service {
     public function shouldBeRunning()
     {
         if(ThisServer::isUbuntu()) {
-            $status = Process::read("service {$this->name} status 2> /dev/null");
+            try {
+                $status = Process::read("service {$this->name} status 2> /dev/null");
+            } catch (Exception $e) {
+                $status = '';
+            }
             if($status != 'running') {
                 $this->start();
             }
