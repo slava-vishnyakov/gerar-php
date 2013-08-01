@@ -77,7 +77,7 @@ Passenger::gem()
 
 Service::named('apache2')->shouldBeRemoved();
 
-Process::runInBash('wget https://raw.github.com/slava-vishnyakov/useful-stuff/master/init.d-nginx.conf -O /etc/init.d/nginx');
+Process::runInBash('wget https://raw.github.com/slava-vishnyakov/gerar-php/master/examples/rvm/files/nginx-init.d -O /etc/init.d/nginx');
 Process::runInBash('chmod o+x /etc/init.d/nginx');
 Process::runInBash('update-rc.d nginx defaults');
 
@@ -94,6 +94,6 @@ Service::named('nginx')
 
 Process::runInBash('mkdir -p /opt/nginx/conf/rails-sites/');
 
-Process::runInBash('wget https://raw.github.com/slava-vishnyakov/gerar-php/master/examples/rvm/.nginx-scripts -O /root/.nginx-scripts');
+Process::runInBash('wget https://raw.github.com/slava-vishnyakov/gerar-php/master/examples/rvm/files/.nginx-scripts -O /root/.nginx-scripts');
 
 File::named('/root/.bashrc')->shouldHaveLine('source /root/.nginx-scripts');
