@@ -30,7 +30,7 @@ gerar some-file.php
 Read the source at http://git.io/oVoLFg
 
 ```sh
-wget -qO - http://git.io/oVoLFg | php
+wget -qO - http://git.io/oVoLFg | gerar
 passenger-add-ruby-host test.com
 ```
 
