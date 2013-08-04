@@ -17,7 +17,7 @@ class Rvm
             Package::named('curl')->shouldBeInstalled();
 
             Console::log("Installing RVM");
-            Process::runInBash('\curl -sL https://get.rvm.io | sudo bash');
+            Process::runInBash('git clone https://github.com/wayneeseguin/rvm.git; cd rvm; git checkout stable ;  ./install ; cd ..; rm -rf rvm');
         }
         return $this;
     }
