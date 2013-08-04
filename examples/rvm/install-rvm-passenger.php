@@ -14,7 +14,7 @@ class Rvm
     public function shouldBeInstalled()
     {
         if (!strstr(Process::runInBash("rvm; true"), 'rvm.io')) {
-            Package::named('curl')->shouldBeInstalled();
+            Package::named('curl git')->shouldBeInstalled();
 
             Console::log("Installing RVM");
             Process::runInBash('git clone https://github.com/wayneeseguin/rvm.git; cd rvm; git checkout stable ;  ./install ; cd ..; rm -rf rvm');
