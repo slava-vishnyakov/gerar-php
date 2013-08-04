@@ -17,7 +17,7 @@ class Rvm
             Package::named('curl')->shouldBeInstalled();
 
             Console::log("Installing RVM");
-            Process::runInBash('\curl -sL https://get.rvm.io | bash');
+            Process::runInBash('\curl -sL https://get.rvm.io | sudo bash');
         }
         return $this;
     }
