@@ -14,19 +14,22 @@ class Rvm
     public function shouldBeInstalled()
     {
         if (!strstr(Process::runInBash("rvm; true"), 'rvm.io')) {
-            Package::named('curl git')->shouldBeInstalled();
+            Package::named('curl')->shouldBeInstalled();
 
-            Console::log("Installing RVM");
-            Process::runInBash('git clone https://github.com/wayneeseguin/rvm.git; cd rvm; git checkout stable ;  ./install ; cd ..; rm -rf rvm');
+            User::named('rails')
+                ->shouldBePresent();
+
+            Console::log("Installing RVM for user rails");
+            Process::runInBash('sudo -u rails "\curl -sL https://get.rvm.io | bash"');
         }
         return $this;
     }
 
     public function rubyShouldBeInstalled($version)
     {
-        if (!strstr(Process::runInBash('ruby -v; true'), $version)) {
+        if (!strstr(Process::runInBash('ruby -v'), $version)) {
             Console::log("Installing Ruby $version");
-            print Process::runInBash("rvm --install $version");
+            Process::runInBash("sudo -u rails 'rvm --install $version'");
         }
         return $this;
     }
@@ -50,7 +53,7 @@ class Passenger
 
         if (!strstr(Process::runInBash("passenger; true"), "Passenger Standalone")) {
             Console::log("Installing passenger gem");
-            Process::runInBash('gem install passenger --no-ri --no-rdoc');
+            Process::runInBash('sudo -u rails "gem install passenger --no-ri --no-rdoc"');
         }
         return $this;
     }
@@ -59,7 +62,7 @@ class Passenger
     {
         if (!file_exists('/opt/nginx')) {
             Console::log("Installing passenger-nginx");
-            Process::runInBash('passenger-install-nginx-module --auto --auto-download --prefix=/opt/nginx');
+            Process::runInBash('sudo -u rails "rvmsudo passenger-install-nginx-module --auto --auto-download --prefix=/opt/nginx"');
         }
         return $this;
     }
