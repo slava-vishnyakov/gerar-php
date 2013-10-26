@@ -27,7 +27,7 @@ class Rvm
 
     public function rubyShouldBeInstalled($version)
     {
-        if (!strstr(Process::runInBash('ruby -v'), $version)) {
+        if (!strstr(Process::runInBash('sudo -H -u rails "ruby -v"'), $version)) {
             Console::log("Installing Ruby $version");
             Process::runInBash("sudo -H -u rails 'rvm --install $version'");
         }
