@@ -13,7 +13,7 @@ class Rvm
 
     public function shouldBeInstalled()
     {
-        if (!strstr(Process::runInBash("sudo -H -u rails rvm; true"), 'rvm.io')) {
+        if (!strstr(Process::runInBashAs("rails", "rvm 2>/dev/null; true"), 'rvm.io')) {
             Package::named('curl')->shouldBeInstalled();
 
             User::named('rails')
@@ -27,9 +27,11 @@ class Rvm
 
     public function rubyShouldBeInstalled($version)
     {
-        if (!strstr(Process::runInBash('sudo -H -u rails bash -lc "(ruby -v || true)"'), $version)) {
+        if (!strstr(Process::runInBashAs('rails', 'ruby1 -v 2>/dev/null; true'), $version)) {
+            Package::named('g++ gcc make libc6-dev libreadline6-dev zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev '.
+            'sqlite3 autoconf libgdbm-dev libncurses5-dev automake libtool bison pkg-config libffi-dev')->shouldBeInstalled();
             Console::log("Installing Ruby $version");
-            Process::runInBash("sudo -H -u rails bash -lc 'source ~/.profile; rvm install $version'");
+            Process::runInBashAs('rails', "source ~/.profile; rvm install $version --autolibs=read-fail");
         }
         return $this;
     }
@@ -51,9 +53,9 @@ class Passenger
             Package::named('libcurl4-openssl-dev')->shouldBeInstalled();
         }
 
-        if (!strstr(Process::runInBash("passenger; true"), "Passenger Standalone")) {
+        if (!strstr(Process::runInBashAs('rails', "passenger 2>/dev/null; true"), "Passenger Standalone")) {
             Console::log("Installing passenger gem");
-            Process::runInBash('sudo -H -u rails "gem install passenger --no-ri --no-rdoc"');
+            Process::runInBashAs('rails', "source ~/.profile; gem install passenger --no-ri --no-rdoc");
         }
         return $this;
     }
@@ -62,7 +64,10 @@ class Passenger
     {
         if (!file_exists('/opt/nginx')) {
             Console::log("Installing passenger-nginx");
-            Process::runInBash('sudo -H -u rails "rvmsudo passenger-install-nginx-module --auto --auto-download --prefix=/opt/nginx"');
+
+            File::named('/etc/sudoers')->shouldHaveLine('rails ALL = NOPASSWD: ALL');
+            Process::runInBashAs('rails', 'rvmsudo_secure_path=1 rvmsudo passenger-install-nginx-module --auto --auto-download --prefix=/opt/nginx');
+            File::named('/etc/sudoers')->replaceIfPresent('rails ALL = NOPASSWD: ALL', '');
         }
         return $this;
     }

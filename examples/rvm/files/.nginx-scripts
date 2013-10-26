@@ -1,20 +1,16 @@
 function passenger-add-ruby-host() {
-  if [[ ! $1 ]]; then
+  if [[ -z $1 ]]; then
     echo "passenger-add-ruby-host hostname [path-to-public]";
   fi
 
   HOSTNAME=$1
   PUBLIC=/home/rails/applications/$1/current/public
 
-  if [[ ! $1 ]]; then
-    echo "passenger-add-ruby-host hostname [path]";
-  fi
-
   if [[ $2 ]]; then
     PUBLIC=$2
   fi
 
-  if [[ ! $2 ]]; then
+  if [[ -z $2 ]]; then
       id rails || useradd rails --create-home
 
       if [[ ! -e /home/rails/applications/$1 ]]; then
