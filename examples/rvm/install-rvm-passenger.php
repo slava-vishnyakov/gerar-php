@@ -13,7 +13,7 @@ class Rvm
 
     public function shouldBeInstalled()
     {
-        if (!strstr(Process::runInBash("rvm; true"), 'rvm.io')) {
+        if (!strstr(Process::runInBash("sudo -H -u rails rvm; true"), 'rvm.io')) {
             Package::named('curl')->shouldBeInstalled();
 
             User::named('rails')
@@ -29,7 +29,7 @@ class Rvm
     {
         if (!strstr(Process::runInBash('ruby -v'), $version)) {
             Console::log("Installing Ruby $version");
-            Process::runInBash("sudo -u rails 'rvm --install $version'");
+            Process::runInBash("sudo -H -u rails 'rvm --install $version'");
         }
         return $this;
     }
@@ -53,7 +53,7 @@ class Passenger
 
         if (!strstr(Process::runInBash("passenger; true"), "Passenger Standalone")) {
             Console::log("Installing passenger gem");
-            Process::runInBash('sudo -u rails "gem install passenger --no-ri --no-rdoc"');
+            Process::runInBash('sudo -H -u rails "gem install passenger --no-ri --no-rdoc"');
         }
         return $this;
     }
@@ -62,7 +62,7 @@ class Passenger
     {
         if (!file_exists('/opt/nginx')) {
             Console::log("Installing passenger-nginx");
-            Process::runInBash('sudo -u rails "rvmsudo passenger-install-nginx-module --auto --auto-download --prefix=/opt/nginx"');
+            Process::runInBash('sudo -H -u rails "rvmsudo passenger-install-nginx-module --auto --auto-download --prefix=/opt/nginx"');
         }
         return $this;
     }
