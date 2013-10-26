@@ -20,7 +20,7 @@ class Rvm
                 ->shouldBePresent();
 
             Console::log("Installing RVM for user rails");
-            Process::runInBash('sudo -u rails bash -lc "\curl -sL https://get.rvm.io | bash"');
+            Process::runInBash('curl -sL https://get.rvm.io | sudo -H -u rails bash');
         }
         return $this;
     }
