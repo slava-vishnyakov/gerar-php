@@ -72,7 +72,7 @@ Ubuntu::fixLocales();
 
 Rvm::manager()
     ->shouldBeInstalled()
-    ->rubyShouldBeInstalled('1.9.3');
+    ->rubyShouldBeInstalled('2.0');
 
 Passenger::gem()
     ->shouldBeInstalled()
