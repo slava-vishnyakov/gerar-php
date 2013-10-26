@@ -13,11 +13,11 @@ class Rvm
 
     public function shouldBeInstalled()
     {
+        User::named('rails')
+            ->shouldBePresent();
+
         if (!strstr(Process::runInBashAs("rails", "rvm 2>/dev/null; true"), 'rvm.io')) {
             Package::named('curl')->shouldBeInstalled();
-
-            User::named('rails')
-                ->shouldBePresent();
 
             Console::log("Installing RVM for user rails");
             Process::runInBash('curl -sL https://get.rvm.io | sudo -H -u rails bash');
@@ -105,3 +105,5 @@ Process::runInBash('mkdir -p /opt/nginx/conf/rails-sites/');
 Process::runInBash('wget https://raw.github.com/slava-vishnyakov/gerar-php/master/examples/rvm/files/.nginx-scripts -O /root/.nginx-scripts');
 
 File::named('/root/.bashrc')->shouldHaveLine('source /root/.nginx-scripts');
+
+Process::runInBash('source /root/.nginx-scripts');
