@@ -43,4 +43,9 @@ class Process
         exec($command, $output, $retVal);
         return $retVal;
     }
+
+    public static function runInBashAs($user, $command)
+    {
+        return self::runInBash("sudo -H -u " . escapeshellarg($user) . " " . escapeshellarg($command));
+    }
 }
