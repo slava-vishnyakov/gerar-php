@@ -11,9 +11,7 @@ Currently only **Ubuntu** is implemented. Probably going to implement CentOS lat
 All commands must be run as **root**
 
 ```sh
-apt-get update
-apt-get install php5-cli
-wget -qO - http://git.io/FhkM4A | php
+apt-get update && apt-get install -y php5-cli && (wget -qO - http://git.io/FhkM4A | php)
 ```
 
 run same command to update Gerar
