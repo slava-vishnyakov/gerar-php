@@ -29,7 +29,7 @@ class Rvm
     {
         if (!strstr(Process::runInBash('sudo -H -u rails bash -lc "(ruby -v || true)"'), $version)) {
             Console::log("Installing Ruby $version");
-            Process::runInBash("sudo -H -u rails 'source ~/.profile; rvm install $version'");
+            Process::runInBash("sudo -H -u rails bash -lc 'source ~/.profile; rvm install $version'");
         }
         return $this;
     }
