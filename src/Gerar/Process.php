@@ -46,6 +46,6 @@ class Process
 
     public static function runInBashAs($user, $command)
     {
-        return self::read("sudo -H -u " . escapeshellarg($user) . " bash -lc " . escapeshellarg($command));
+        return self::read("sudo -i -u " . escapeshellarg($user) . " bash -lc " . escapeshellarg($command));
     }
 }
