@@ -25,7 +25,7 @@ gerar some-file.php
 
 ## Examples
 
-* Install RVM, Ruby 1.9.3, Passenger and create `passenger-add-host` command
+* Install RVM, Ruby 2.0, Passenger and create `passenger-add-host` command
 
 Read the source at http://git.io/oVoLFg
 
