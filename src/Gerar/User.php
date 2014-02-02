@@ -43,7 +43,7 @@ class User
      */
     public function shouldHaveSshKey()
     {
-        if (ThisServer::isUbuntu()) {
+        if (ThisServer::isUbuntu() || ThisServer::isDebian()) {
             $key = $this->getPrivateKeyFilename();
             if (!File::named($key)->exists()) {
                 Process::runAndCheckReturnCode(

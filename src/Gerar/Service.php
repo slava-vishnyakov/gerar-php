@@ -24,7 +24,7 @@ class Service
      */
     public function shouldBeRunning()
     {
-        if (ThisServer::isUbuntu()) {
+        if (ThisServer::isUbuntu() || ThisServer::isDebian()) {
             try {
                 $status = Process::read("service {$this->name} status 2> /dev/null");
             } catch (Exception $e) {
@@ -53,7 +53,7 @@ class Service
      */
     public function shouldBeRunningAtReboots()
     {
-        if (ThisServer::isUbuntu()) {
+        if (ThisServer::isUbuntu() || ThisServer::isDebian()) {
             return Process::runAndCheckReturnCode("update-rc.d {$this->name} defaults");
         }
         Gerar::notImplemented();
