@@ -2,11 +2,11 @@
 
 namespace Gerar;
 
-class Ubuntu
+class Debian
 {
     public static function fixLocales()
     {
-        if (ThisServer::isUbuntu()) {
+        if (ThisServer::isDebian()) {
             if (!File::named('/etc/environment')->contains('LC_ALL=en_US.UTF-8')) {
                 Console::log("Fixing locale files");
                 File::named('/etc/environment')->shouldHaveLine('LC_ALL=en_US.UTF-8')->shouldHaveLine(
@@ -20,7 +20,7 @@ class Ubuntu
 
     public static function update()
     {
-        Console::log("apt-get update");
-        Process::runAndCheckReturnCode("apt-get update");
+        Console::log("aptitude update");
+        Process::runAndCheckReturnCode("aptitude update");
     }
 }

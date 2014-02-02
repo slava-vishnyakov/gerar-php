@@ -4,6 +4,9 @@ namespace Gerar;
 
 class Ssh
 {
+    /**
+     * @return Ssh
+     */
     public static function server()
     {
         return new self;
@@ -18,19 +21,21 @@ class Ssh
 
     private function shouldNotAllowRoot()
     {
-        File::named('/etc/ssh/sshd_config')
-            ->replaceIfPresent(new RegExp("/^#?PermitRootLogin yes/m"), 'PermitRootLogin no')
-            ->shouldHaveLine("PermitRootLogin no");
+        File::named('/etc/ssh/sshd_config')->replaceIfPresent(
+                new RegExp("/^#?PermitRootLogin yes/m"),
+                'PermitRootLogin no'
+            )->shouldHaveLine("PermitRootLogin no");
     }
 
     private function shouldNotAllowPlainTextPasswords()
     {
-        File::named('/etc/ssh/sshd_config')
-            ->replaceIfPresent(new RegExp("/^#?PasswordAuthentication yes/m"), 'PasswordAuthentication no')
-            ->shouldHaveLine("PasswordAuthentication no")
-            ->whenChanges(function() {
-                Service::named('ssh')->restart();
-            });
+        File::named('/etc/ssh/sshd_config')->replaceIfPresent(
+                new RegExp("/^#?PasswordAuthentication yes/m"),
+                'PasswordAuthentication no'
+            )->shouldHaveLine("PasswordAuthentication no")->whenChanges(
+                function () {
+                    Service::named('ssh')->restart();
+                }
+            );
     }
-
 }

@@ -4,14 +4,18 @@ namespace Gerar;
 
 class PackageList
 {
-    function __construct(array $names)
+    public function __construct(array $names)
     {
         $this->names = $names;
     }
 
+    /**
+     * @param string $function
+     * @param array  $arguments
+     */
     public function __call($function, $arguments)
     {
-        foreach($this->names as $name) {
+        foreach ($this->names as $name) {
             $package = new Package($name);
             call_user_func_array(array($package, $function), $arguments);
         }

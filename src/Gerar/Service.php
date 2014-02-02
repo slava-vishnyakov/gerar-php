@@ -2,41 +2,58 @@
 
 namespace Gerar;
 
-class Service {
+class Service
+{
     function __construct($name)
     {
         $this->name = $name;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return Service
+     */
     public static function named($name)
     {
-        return new Service($name);
+        return new self($name);
     }
 
+    /**
+     * @return $this
+     */
     public function shouldBeRunning()
     {
-        if(ThisServer::isUbuntu()) {
+        if (ThisServer::isUbuntu() || ThisServer::isDebian()) {
             try {
                 $status = Process::read("service {$this->name} status 2> /dev/null");
             } catch (Exception $e) {
                 $status = '';
             }
-            if($status != 'running') {
+            if ($status != 'running') {
                 $this->start();
             }
         }
+
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function shouldBeInstalled()
     {
         Package::named($this->name)->shouldBeInstalled();
+
         return $this;
     }
 
+    /**
+     * @return boolean
+     */
     public function shouldBeRunningAtReboots()
     {
-        if(ThisServer::isUbuntu()){
+        if (ThisServer::isUbuntu() || ThisServer::isDebian()) {
             return Process::runAndCheckReturnCode("update-rc.d {$this->name} defaults");
         }
         Gerar::notImplemented();
@@ -54,10 +71,13 @@ class Service {
         Process::runAndCheckReturnCode("service {$this->name} restart");
     }
 
+    /**
+     * @return $this
+     */
     public function shouldBeRemoved()
     {
         Package::named($this->name)->shouldBeRemoved();
-        return $this;
 
+        return $this;
     }
 }
