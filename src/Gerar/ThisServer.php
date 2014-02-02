@@ -14,6 +14,16 @@ class ThisServer
         return PHP_OS == 'Darwin';
     }
 
+    public static function isDebian()
+    {
+        if(ThisServer::isLinux()) {
+            if(Process::read("cat /etc/debian_release | grep ID") == "ID=debian") {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static function isUbuntu()
     {
         if(ThisServer::isLinux()) {
