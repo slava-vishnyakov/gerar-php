@@ -2,7 +2,11 @@
 
 namespace Gerar;
 
-class RegExp {
+class RegExp
+{
+    /**
+     * @var string
+     */
     public $regexp;
 
     function __construct($regexp)
@@ -10,6 +14,9 @@ class RegExp {
         $this->regexp = $regexp;
     }
 
+    /**
+     * @return string
+     */
     function __toString()
     {
         return "RegExp({$this->regexp})";

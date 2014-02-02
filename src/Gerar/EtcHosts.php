@@ -4,11 +4,20 @@ namespace Gerar;
 
 class EtcHosts
 {
+    /**
+     * @return EtcHosts
+     */
     public static function file()
     {
         return new self;
     }
 
+    /**
+     * @param string $host
+     * @param string $ip
+     *
+     * @return $this
+     */
     public function shouldResolve($host, $ip)
     {
         if (ThisServer::isLinux()) {
@@ -17,18 +26,26 @@ class EtcHosts
                 Console::log("Resoving $host -> $ip (via /etc/hosts)");
                 $this->actualFile()->shouldHaveLine($line);
             }
+
             return $this;
         }
         Gerar::notImplemented();
     }
 
+    /**
+     * @param string $host
+     *
+     * @return $this
+     */
     public function shouldNotResolve($host)
     {
         if (ThisServer::isLinux()) {
-            $this->actualFile()
-                # TODO: This does not work
-                ->replaceIfPresent(new RegExp('/^\s*(\d\.)+\s+\b' . preg_quote($host) . '\s*$/m'), '')
-                ->replaceIfPresent(new RegExp('/^(.*?)\b' . preg_quote($host) . '\b/m'), '\1 # removed');
+            $this->actualFile() # TODO: This does not work
+                ->replaceIfPresent(
+                    new RegExp('/^\s*(\d\.)+\s+\b' . preg_quote($host) . '\s*$/m'),
+                    ''
+                )->replaceIfPresent(new RegExp('/^(.*?)\b' . preg_quote($host) . '\b/m'), '\1 # removed');
+
             return $this;
         }
         Gerar::notImplemented();

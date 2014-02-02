@@ -4,6 +4,10 @@ namespace Gerar;
 
 class Hostname
 {
+    /**
+     * @param string $hostname
+     * @param string $function
+     */
     public static function run($hostname, $function)
     {
         if (ThisServer::hostname() == $hostname) {
@@ -11,14 +15,15 @@ class Hostname
         }
     }
 
+    /**
+     * @param string $string
+     */
     public static function change($string)
     {
-        if(ThisServer::hostname() != $string) {
-            File::named('/etc/hosts')
-                ->shouldHaveLine("127.0.0.1 $string\n");
+        if (ThisServer::hostname() != $string) {
+            File::named('/etc/hosts')->shouldHaveLine("127.0.0.1 $string\n");
 
-            File::named('/etc/host')
-                ->write("$string");
+            File::named('/etc/host')->write("$string");
 
             Process::runAndCheckReturnCode("hostname $string");
         }
