@@ -59,10 +59,28 @@ class Service
         Gerar::notImplemented();
     }
 
+    public function stop()
+    {
+        Console::log("Stoping {$this->name} service");
+        Process::runAndCheckReturnCode("service {$this->name} stop");
+    }
+
     public function start()
     {
         Console::log("Starting {$this->name} service");
         Process::runAndCheckReturnCode("service {$this->name} start");
+    }
+
+    public function reload()
+    {
+        Console::log("Reloading {$this->name} service");
+        Process::runAndCheckReturnCode("service {$this->name} reload");
+    }
+
+    public function forceReload()
+    {
+        Console::log("Force-reloading {$this->name} service");
+        Process::runAndCheckReturnCode("service {$this->name} force-reload");
     }
 
     public function restart()
